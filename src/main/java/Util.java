@@ -18,7 +18,7 @@ public class Util {
         driver.manage().window().maximize();
     }
 
-    public void loginToSite(){
+    public void loginToSite(String username, String password){
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement element = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("login-form-username")));
@@ -27,8 +27,8 @@ public class Util {
         WebElement passwordField = driver.findElement(By.id("login-form-password"));
         WebElement loginButton = driver.findElement(By.id("login"));
 
-        userField.sendKeys(System.getenv("jiraUser"));
-        passwordField.sendKeys(System.getenv("jiraPass"));
+        userField.sendKeys(username);
+        passwordField.sendKeys(password);
         loginButton.click();
     }
 
