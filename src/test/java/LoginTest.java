@@ -37,4 +37,9 @@ public class LoginTest {
         Assert.assertNotNull(userButton);
     }
 
+    @AfterAll
+    public static void tearDown(){
+        util.closeWindow();
+    }
+
 }

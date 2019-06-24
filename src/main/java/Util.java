@@ -26,4 +26,8 @@ public class Util {
         loginButton.click();
     }
 
+    public void closeWindow(){
+        driver.close();
+    }
+
 }
