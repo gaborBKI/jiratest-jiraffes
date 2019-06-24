@@ -1,6 +1,8 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Util {
 
@@ -17,6 +19,10 @@ public class Util {
     }
 
     public void loginToSite(){
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement element = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("login-form-username")));
+        WebElement userButton = driver.findElement(By.id("user-options"));
         WebElement userField = driver.findElement(By.id("login-form-username"));
         WebElement passwordField = driver.findElement(By.id("login-form-password"));
         WebElement loginButton = driver.findElement(By.id("login"));
