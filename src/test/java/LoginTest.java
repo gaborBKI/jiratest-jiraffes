@@ -1,8 +1,6 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,8 +8,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -19,6 +15,7 @@ public class LoginTest {
 
     private static WebDriver driver;
     private static Util util;
+    private static WebDriverWait wait;
 
     static Stream<Arguments> userDataProvider() {
         return Stream.of(Arguments.of("username", "123"),
@@ -35,6 +32,7 @@ public class LoginTest {
                 driver = new FirefoxDriver();
                 break;
         }
+        wait = new WebDriverWait(driver, 10);
         util = new Util(driver);
         util.navigateToPage();
     }
@@ -43,10 +41,7 @@ public class LoginTest {
     @Test
     public void wrongPasswordTest(){
         util.loginToSite(System.getenv("jiraUser"), "123");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement element = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("usernameerror")));
-        WebElement error = driver.findElement(By.id("usernameerror"));
+        WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("usernameerror")));
         Assert.assertNotNull(error);
     }
 
@@ -54,10 +49,7 @@ public class LoginTest {
     @Test
     public void happyPathTest(){
         util.loginToSite(System.getenv("jiraUser"), System.getenv("jiraPass"));
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement element = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
-        WebElement userButton = driver.findElement(By.id("header-details-user-fullname"));
+        WebElement userButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
         Assert.assertNotNull(userButton);
     }
 
