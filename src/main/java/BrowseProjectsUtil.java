@@ -26,7 +26,7 @@ public class BrowseProjectsUtil {
 
     public void checkForProjectInList(String projectTitle){
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@original-title=" + "'" + projectTitle + "'" + "]")));
-        WebElement mainTestingProject = driver.findElement(By.xpath("//*[@original-title='Main Testing Project']"));
+        WebElement mainTestingProject = driver.findElement(By.xpath("//*[@original-title=" + "'" + projectTitle + "'" + "]"));
         mainTestingProject.click();
     }
 
