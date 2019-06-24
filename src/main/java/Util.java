@@ -11,7 +11,7 @@ public class Util {
     }
 
     public void navigateToPage(){
-        System.setProperty("webdriver.gecko.driver", "/usr/local/bin/geckodriver");
+        System.setProperty(System.getenv("webDriver"), System.getenv("driverLocation"));
         driver.get("https://jira.codecool.codecanvas.hu/secure/Dashboard.jspa");
         driver.manage().window().maximize();
     }
