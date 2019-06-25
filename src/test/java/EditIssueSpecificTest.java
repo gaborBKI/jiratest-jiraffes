@@ -33,7 +33,7 @@ public class EditIssueSpecificTest {
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
     }
 
-    @Test
+    /*@Test
     public void deleteRequiredFieldsTest() {
         WebDriverWait waitForMainPage = new WebDriverWait(driver, 10);
         WebElement elementMainPage = waitForMainPage.until(
@@ -75,33 +75,31 @@ public class EditIssueSpecificTest {
         WebElement waitForError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("error")));
         WebElement error = driver.findElement(By.className("error"));
         Assert.assertNotNull(error);
-    }
+    }*/
 
     @Test
     public void editDescription() {
         WebDriverWait waitForMainPage = new WebDriverWait(driver, 10);
-        WebElement elementMainPage = waitForMainPage.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
+        waitForMainPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
         util.navigateToPage("https://jira.codecool.codecanvas.hu/browse/SAND-40");
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement element = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
-        WebElement editButton = driver.findElement(By.id("edit-issue"));
+        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
         editButton.click();
-        WebElement editIssueDialogWait = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue-dialog")));
-        WebElement description = driver.findElement(By.id("description-wiki-edit"));
-        description.click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        description.clear();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        description.sendKeys("Test");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"edit-issue-dialog\"]/div[2]/div[1]/div/form")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("aui-uid-1")));
+        driver.findElement(By.id("aui-uid-1")).click();
+        WebElement descriptionBox = driver.findElement(By.id("description-wiki-edit"));
+        descriptionBox.click();
+        WebElement text = driver.findElement(By.id("description"));
+        text.clear();
+        text.sendKeys("Test");
         WebElement editIssueSubmit = driver.findElement(By.id("edit-issue-submit"));
         editIssueSubmit.click();
     }
 
-    @AfterEach
+    /*@AfterEach
     public void tearDown(){
         util.closeWindow();
-    }
+    }*/
 
 }
