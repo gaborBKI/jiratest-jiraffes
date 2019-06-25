@@ -1,7 +1,5 @@
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,10 +8,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LogoutTest {
 
     private static WebDriver driver;
     private static Util util;
+    private static WebDriverWait wait;
 
     @BeforeAll
     public static void setUp(){
@@ -28,14 +28,13 @@ public class LogoutTest {
         util = new Util(driver);
         util.navigateToPage();
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
+        wait = new WebDriverWait(driver, 10);
     }
 
+    @Order(1)
     @Test
     public void logOutTest(){
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement element = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
-        WebElement userMenu = driver.findElement(By.id("header-details-user-fullname"));
+        WebElement userMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
         userMenu.click();
         WebElement logOutButton = driver.findElement(By.id("log_out"));
         logOutButton.click();
@@ -43,8 +42,16 @@ public class LogoutTest {
         Assert.assertEquals("Log In", userOptionText);
     }
 
-    @AfterEach
-    public void tearDown(){
+    @Order(2)
+    @Test
+    public void backOnLogOutPage(){
+        driver.navigate().back();
+        WebElement loginContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("login-container")));
+        Assert.assertNotNull(loginContainer);
+    }
+
+    @AfterAll
+    public static void tearDown(){
         util.closeWindow();
     }
 
