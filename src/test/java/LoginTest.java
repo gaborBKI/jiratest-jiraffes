@@ -1,6 +1,8 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,6 +24,11 @@ public class LoginTest {
                 Arguments.of(System.getenv("jiraUser"), "123"));
     }
 
+    static Stream<Arguments> passwordProvider() {
+        return Stream.of(Arguments.of("123"),
+                Arguments.of(""));
+    }
+
     @BeforeEach
     public void setUp(){
         switch (System.getenv("driverType")){
@@ -38,9 +45,10 @@ public class LoginTest {
     }
 
     @Order(1)
-    @Test
-    public void wrongPasswordTest(){
-        util.loginToSite(System.getenv("jiraUser"), "123");
+    @ParameterizedTest
+    @MethodSource("passwordProvider")
+    public void wrongPasswordTest(String wrongPassword){
+        util.loginToSite(System.getenv("jiraUser"), wrongPassword);
         WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("usernameerror")));
         Assert.assertNotNull(error);
     }
@@ -51,6 +59,14 @@ public class LoginTest {
         util.loginToSite(System.getenv("jiraUser"), System.getenv("jiraPass"));
         WebElement userButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
         Assert.assertNotNull(userButton);
+    }
+
+    @Order(3)
+    @Test
+    public void emptyFieldsTest(){
+        util.loginToSite("", "");
+        WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("usernameerror")));
+        Assert.assertNotNull(error);
     }
 
     /*@Order(3)
