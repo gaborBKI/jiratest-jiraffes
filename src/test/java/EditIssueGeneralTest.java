@@ -38,14 +38,16 @@ public class EditIssueGeneralTest {
         Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
     }
 
-    /*
     @Test
     public void editToucanGeneralTest() {
         driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/TOUCAN-51");
         driver.manage().window().maximize();
         System.out.println("Toucan project opened");
+        driver.findElement(By.id("Edit")).click();
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
+
     }
-     */
 
     @Test
     public void editCoalaGeneralTest() {
