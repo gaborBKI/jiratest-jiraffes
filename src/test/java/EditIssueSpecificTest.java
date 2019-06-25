@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,8 +16,8 @@ public class EditIssueSpecificTest {
     private static WebDriver driver;
     private static Util util;
 
-    @BeforeAll
-    public static void setUp(){
+    @BeforeEach
+    public void setUp(){
         switch (System.getenv("driverType")){
             case "Chrome":
                 driver = new ChromeDriver();
@@ -54,6 +55,31 @@ public class EditIssueSpecificTest {
         issueType.clear();
         Assert.assertNotNull(error);
         Assert.assertNotNull(issueType);
+    }
+
+    @Test
+    public void deleteIssueSummary() {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement elementMainPage = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
+        util.navigateToPage("https://jira.codecool.codecanvas.hu/browse/SAND-40");
+        WebElement element = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        WebElement issueField = driver.findElement(By.id("summary-val"));
+        issueField.click();
+        WebElement waitForEditable = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#summary")));
+        WebElement issueFieldEditable = driver.findElement(By.cssSelector("#summary"));
+        issueFieldEditable.clear();
+        WebElement waitForError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("error")));
+        WebElement error = driver.findElement(By.className("error"));
+        Assert.assertNotNull(error);
+
+
+    }
+
+    @AfterEach
+    public void tearDown(){
+        util.closeWindow();
     }
 
 }
