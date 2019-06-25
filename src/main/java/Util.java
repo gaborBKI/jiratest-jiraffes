@@ -7,9 +7,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Util {
 
     private WebDriver driver;
+    private WebDriverWait wait;
 
     public Util(WebDriver driver) {
         this.driver = driver;
+        wait = new WebDriverWait(driver, 10);
     }
 
     public void navigateToPage(){
@@ -19,10 +21,7 @@ public class Util {
     }
 
     public void loginToSite(String username, String password){
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement element = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("login-form-username")));
-        WebElement userButton = driver.findElement(By.id("user-options"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("login-form-username")));
         WebElement userField = driver.findElement(By.id("login-form-username"));
         WebElement passwordField = driver.findElement(By.id("login-form-password"));
         WebElement loginButton = driver.findElement(By.id("login"));
@@ -30,6 +29,13 @@ public class Util {
         userField.sendKeys(username);
         passwordField.sendKeys(password);
         loginButton.click();
+    }
+
+    public void logoutOfSite(){
+        WebElement userMenu = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
+        userMenu.click();
+        WebElement logOutButton = driver.findElement(By.id("log_out"));
+        logOutButton.click();
     }
 
     public void navigateToPage(String url){
