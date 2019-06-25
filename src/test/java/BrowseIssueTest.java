@@ -42,14 +42,14 @@ public class BrowseIssueTest {
         input.click();
         input.sendKeys("none");
         driver.findElement(By.xpath("//*[@original-title='Search for issues']")).click();
-        driver.manage().timeouts().pageLoadTimeout(100, SECONDS);
+        wait.until(ExpectedConditions.textToBe(By.id("summary-val"), "none"));
         WebElement summary = driver.findElement(By.id("summary-val"));
         Assert.assertEquals("none", summary.getText());
     }
 
-    //@AfterEach
-    //public void tearDown(){
-        //util.closeWindow();
-    //}
+    @AfterEach
+    public void tearDown(){
+        util.closeWindow();
+    }
 
 }
