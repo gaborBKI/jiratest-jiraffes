@@ -14,8 +14,8 @@ public class EditIssueGeneralTest {
     private static WebDriver driver;
     private static Util util;
 
-    @BeforeAll
-    public static void setUp(){
+    @BeforeEach
+    public void setUp(){
         switch (System.getenv("driverType")){
             case "Chrome":
                 driver = new ChromeDriver();
@@ -33,23 +33,32 @@ public class EditIssueGeneralTest {
     public void editPageOpensTest() {
         driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/SAND-40");
         driver.manage().window().maximize();
-        System.out.println("page opened");
+        System.out.println("Page opened");
         driver.findElement(By.linkText("Edit")).click();
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
+    }
+    /*
+    @Test
+    public void editToucanGeneralTest() {
+        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/TOUCAN-51");
+        driver.manage().window().maximize();
+        System.out.println("Toucan project opened");
+    }
+     */
+
+
+    @Test
+    public void editCoalaGeneralTest() {
+        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/COALA-185");
+        driver.manage().window().maximize();
+        System.out.println("Jira project opened");
+        driver.findElement(By.id("opsbar-edit-issue_container")).click();
         WebDriverWait wait = new WebDriverWait(driver, 20);
         Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
     }
 
     /*
-    @Test
-    public void editToucanGeneralTest() {
-
-    }
-
-    @Test
-    public void editCoalaGeneralTest() {
-
-    }
-
     @Test
     public void editJetiGeneralTest() {
 
