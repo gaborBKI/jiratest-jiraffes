@@ -28,7 +28,6 @@ public class EditIssueGeneralTest {
         util.navigateToPage();
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
     }
-
     @Test
     public void editPageOpensTest() {
         driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/SAND-40");
@@ -38,6 +37,7 @@ public class EditIssueGeneralTest {
         WebDriverWait wait = new WebDriverWait(driver, 20);
         Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
     }
+
     /*
     @Test
     public void editToucanGeneralTest() {
@@ -46,7 +46,6 @@ public class EditIssueGeneralTest {
         System.out.println("Toucan project opened");
     }
      */
-
 
     @Test
     public void editCoalaGeneralTest() {
@@ -58,12 +57,15 @@ public class EditIssueGeneralTest {
         Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
     }
 
-    /*
     @Test
     public void editJetiGeneralTest() {
-
+        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/MTP-49");
+        driver.manage().window().maximize();
+        System.out.println("Jeti project opened");
+        driver.findElement(By.id("edit-issue")).click();
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
     }
-     */
 
     @AfterEach
     public void tearDown() {
