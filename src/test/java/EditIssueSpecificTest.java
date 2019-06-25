@@ -11,6 +11,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.concurrent.TimeUnit;
+
 public class EditIssueSpecificTest {
 
     private static WebDriver driver;
@@ -73,8 +75,28 @@ public class EditIssueSpecificTest {
         WebElement waitForError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("error")));
         WebElement error = driver.findElement(By.className("error"));
         Assert.assertNotNull(error);
+    }
 
-
+    @Test
+    public void editDescription() {
+        WebDriverWait waitForMainPage = new WebDriverWait(driver, 10);
+        WebElement elementMainPage = waitForMainPage.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
+        util.navigateToPage("https://jira.codecool.codecanvas.hu/browse/SAND-40");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement element = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        WebElement editButton = driver.findElement(By.id("edit-issue"));
+        editButton.click();
+        WebElement editIssueDialogWait = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue-dialog")));
+        WebElement description = driver.findElement(By.id("description-wiki-edit"));
+        description.click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        description.clear();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        description.sendKeys("Test");
+        WebElement editIssueSubmit = driver.findElement(By.id("edit-issue-submit"));
+        editIssueSubmit.click();
     }
 
     @AfterEach
