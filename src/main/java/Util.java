@@ -36,4 +36,23 @@ public class Util {
         driver.close();
     }
 
+    public void getToCreateIssue(){
+        driver.findElement(By.id("create_link")).click();
+    }
+
+    public void selectProject(String project){
+        WebDriverWait wait = new WebDriverWait(driver, 10); //todo: Refactor this out of the function
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("project-field")));
+        WebElement projectInputBox = driver.findElement(By.id("project-field"));
+        projectInputBox.click();
+        projectInputBox.sendKeys(project);
+    }
+    public void selectIssue(String issue){
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issuetype-field")));
+        WebElement issueInputBox = driver.findElement(By.id("issuetype-field"));
+        issueInputBox.click();
+        issueInputBox.sendKeys(issue);
+    }
+
 }
