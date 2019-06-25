@@ -32,6 +32,10 @@ public class Util {
         loginButton.click();
     }
 
+    public void navigateToPage(String url){
+        driver.get(url);
+    }
+
     public void closeWindow(){
         driver.close();
     }
