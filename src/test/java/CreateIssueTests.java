@@ -33,16 +33,6 @@ public class CreateIssueTests {
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
     }
 
-    @AfterEach
-    public void close(){
-        driver.close();
-    }
-
-    static Stream<Arguments> issues() {
-        return Stream.of(Arguments.of("Story"),
-                Arguments.of("Task"), Arguments.of("Bug"));
-    }
-
     @ParameterizedTest
     @MethodSource("issues")
     public void testCoalaCreateIssues(String issue){
@@ -52,8 +42,15 @@ public class CreateIssueTests {
         String projectResultJSON = driver.findElement(By.id("project-options")).getAttribute("data-suggestions");
         String parsedName = createIssueUtil.parsejson(projectResultJSON);
         Assert.assertTrue(createIssueUtil.checkForMatch(projectName, parsedName));
-        util.selectIssue(issue);
+    }
 
+    @AfterEach
+    public void close(){
+        driver.close();
+    }
 
+    static Stream<Arguments> issues() {
+        return Stream.of(Arguments.of("Story"),
+                Arguments.of("Task"), Arguments.of("Bug"));
     }
 }
