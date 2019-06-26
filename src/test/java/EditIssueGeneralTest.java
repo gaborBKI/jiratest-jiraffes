@@ -1,7 +1,9 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +11,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.stream.Stream;
 
 public class EditIssueGeneralTest {
 
@@ -30,10 +34,10 @@ public class EditIssueGeneralTest {
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
     }
 
-    /*
-    @Test
-    public void editPageOpensTest() {
-        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/SAND-40");
+    @ParameterizedTest
+    @MethodSource("urlsStream")
+    public void editPageOpensTest(String urls) {
+        driver.navigate().to(urls);
         driver.manage().window().maximize();
         System.out.println("Page opened");
         WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -42,60 +46,17 @@ public class EditIssueGeneralTest {
         Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
     }
 
-    @Test
-    public void editToucanGeneralTest() {
-        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/TOUCAN-51");
-        driver.manage().window().maximize();
-        System.out.println("Toucan project opened");
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
-        editButton.click();
-        Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
-
+    static Stream<Arguments> urlsStream() {
+        return Stream.of(Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-1"),
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-2"),
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-3"),
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-1"),
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-2"),
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-3"),
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/TOUCAN-1"),
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/TOUCAN-2"),
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/TOUCAN-3"));
     }
-
-    @Test
-    public void editCoalaGeneralTest() {
-        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/COALA-185");
-        driver.manage().window().maximize();
-        System.out.println("Jira project opened");
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
-        editButton.click();
-        Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
-    }
-
-    @Test
-    public void editJetiGeneralTest() {
-        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/MTP-49");
-        driver.manage().window().maximize();
-        System.out.println("Jeti project opened");
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
-        editButton.click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue-dialog")));
-        Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
-    }
-
-     */
-
-
-    @Test
-    public void quickEditWithGreyButtonsTest() {
-        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/SAND-40");
-        driver.manage().window().maximize();
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        WebElement commentButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("comment-issue")));
-        commentButton.click();
-        WebElement commentTextArea = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("comment")));
-        commentTextArea.sendKeys("Test issue new comment");
-        driver.findElement(By.id("issue-comment-add-submit")).click();
-        System.out.println(driver.findElement(By.xpath("//*[@id=\"issue_actions_container\"][last()]")).getText());
-
-        Assert.assertEquals("Test issue new comment", commentTextArea.getText());
-
-    }
-
 
     @AfterEach
     public void tearDown() {
