@@ -57,7 +57,7 @@ public class Util {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issuetype-field")));
         WebElement issueInputBox = driver.findElement(By.id("issuetype-field"));
         issueInputBox.click();
-        issueInputBox.sendKeys(issue);
+        issueInputBox.sendKeys(issue+ Keys.TAB);
     }
 
 }

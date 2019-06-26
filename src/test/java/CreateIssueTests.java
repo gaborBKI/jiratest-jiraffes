@@ -9,8 +9,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public class CreateIssueTests {
@@ -38,13 +41,21 @@ public class CreateIssueTests {
     @ParameterizedTest
     @MethodSource("issues")
     public void testCoalaCreateIssues(String issue) {
-        String projectName = "coala";
+        String projectName = "jeti";
         util.getToCreateIssue();
         util.selectProject(projectName);
         util.selectIssue(issue);
-        WebElement selectBox = driver.findElement(By.id("issuetype-field"));
-        String issueName = selectBox.getText();
-        /*String projectResultJSON = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
+
+        /*
+        //isWarning hidden only was found in case of non existent issue
+        String isWarningHidden = driver.findElement(By.id("assistive-text")).getText();
+        Assert.assertNull(isWarningHidden);
+
+         */
+        /*
+        //Get data with Json(Was not working with Issue)
+        Assert.assertEquals(issue, issueName);
+        String projectResultJSON = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
         String parsedName = createIssueUtil.parsejson(projectResultJSON);
         Assert.assertTrue(createIssueUtil.checkForMatch(issue, parsedName));*/
 
