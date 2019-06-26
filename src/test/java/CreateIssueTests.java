@@ -41,10 +41,14 @@ public class CreateIssueTests {
     @ParameterizedTest
     @MethodSource("issues")
     public void testCoalaCreateIssues(String issue) {
-        String projectName = "jeti";
+        String projectName = "coala";
         util.getToCreateIssue();
         util.selectProject(projectName);
         util.selectIssue(issue);
+
+        String issues = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
+        String activeIssue = createIssueUtil.parsejson(issues);
+        Assert.assertEquals(issue, activeIssue);
 
         /*
         //isWarning hidden only was found in case of non existent issue

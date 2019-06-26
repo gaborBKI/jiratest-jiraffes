@@ -8,8 +8,15 @@ public class CreateIssueUtil {
 
         final JSONObject obj = new JSONObject(jsonText.substring(1, jsonText.length()-1));
         final JSONArray itemArray = obj.getJSONArray("items");
-        final String label = itemArray.getJSONObject(0).getString("label");
-        return label;
+        String activeField = "";
+        for(int i=0; i<itemArray.length(); i++){
+            JSONObject item = itemArray.getJSONObject(i);
+            boolean selected = item.getBoolean("selected");
+            if (selected){
+                activeField = item.getString("label");
+            }
+        }
+        return activeField;
     }
 
     public boolean checkForMatch(String wordToCheck,String fromText){
