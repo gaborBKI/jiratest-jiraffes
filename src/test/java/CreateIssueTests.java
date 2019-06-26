@@ -6,8 +6,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.stream.Stream;
 
@@ -49,10 +51,12 @@ public class CreateIssueTests {
         String projectName = "coala";
         util.getToCreateIssue();
         util.selectProject(projectName);
-        String projectResultJSON = driver.findElement(By.id("project-options")).getAttribute("data-suggestions");
-        String parsedName = createIssueUtil.parsejson(projectResultJSON);
-        Assert.assertTrue(createIssueUtil.checkForMatch(projectName, parsedName));
         util.selectIssue(issue);
+        Select issueBox = new Select(driver.findElement(By.className("icon aui-ss-icon noloading drop-menu")));
+        String issueName =issueBox.getFirstSelectedOption().getText();
+        /*String projectResultJSON = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
+        String parsedName = createIssueUtil.parsejson(projectResultJSON);
+        Assert.assertTrue(createIssueUtil.checkForMatch(issue, parsedName));*/
 
 
     }
