@@ -35,6 +35,21 @@ public class CreateIssueTests {
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
     }
 
+    @ParameterizedTest
+    @MethodSource("issues")
+    public void testCoalaCreateIssues(String issue) {
+        String projectName = "coala";
+        util.getToCreateIssue();
+        util.selectProject(projectName);
+        util.selectIssue(issue);
+        Select issueBox = new Select(driver.findElement(By.className("icon aui-ss-icon noloading drop-menu")));
+        String issueName = issueBox.getFirstSelectedOption().getText();
+        /*String projectResultJSON = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
+        String parsedName = createIssueUtil.parsejson(projectResultJSON);
+        Assert.assertTrue(createIssueUtil.checkForMatch(issue, parsedName));*/
+
+    }
+
     @AfterEach
     public void close(){
         driver.close();
@@ -43,21 +58,5 @@ public class CreateIssueTests {
     static Stream<Arguments> issues() {
         return Stream.of(Arguments.of("Story"),
                 Arguments.of("Task"), Arguments.of("Bug"));
-    }
-
-    @ParameterizedTest
-    @MethodSource("issues")
-    public void testCoalaCreateIssues(String issue){
-        String projectName = "coala";
-        util.getToCreateIssue();
-        util.selectProject(projectName);
-        util.selectIssue(issue);
-        Select issueBox = new Select(driver.findElement(By.className("icon aui-ss-icon noloading drop-menu")));
-        String issueName =issueBox.getFirstSelectedOption().getText();
-        /*String projectResultJSON = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
-        String parsedName = createIssueUtil.parsejson(projectResultJSON);
-        Assert.assertTrue(createIssueUtil.checkForMatch(issue, parsedName));*/
-
-
     }
 }

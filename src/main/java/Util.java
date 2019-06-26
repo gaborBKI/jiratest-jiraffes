@@ -13,13 +13,13 @@ public class Util {
         this.driver = driver;
     }
 
-    public void navigateToPage(){
+    public void navigateToPage() {
         System.setProperty(System.getenv("webDriver"), System.getenv("driverLocation"));
         driver.get("https://jira.codecool.codecanvas.hu/secure/Dashboard.jspa");
         driver.manage().window().maximize();
     }
 
-    public void loginToSite(String username, String password){
+    public void loginToSite(String username, String password) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement element = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("login-form-username")));
@@ -33,7 +33,7 @@ public class Util {
         loginButton.click();
     }
 
-    public void closeWindow(){
+    public void closeWindow() {
         driver.close();
     }
 
@@ -43,7 +43,7 @@ public class Util {
         driver.findElement(By.id("create_link")).click();
     }
 
-    public void selectProject(String project){
+    public void selectProject(String project) {
         WebDriverWait wait = new WebDriverWait(driver, 10); //todo: Refactor this out of the function
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("project-field")));
         WebElement projectInputBox = driver.findElement(By.id("project-field"));
@@ -51,7 +51,8 @@ public class Util {
         projectInputBox.sendKeys(project + Keys.RETURN);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issuetype-field")));
     }
-    public void selectIssue(String issue){
+
+    public void selectIssue(String issue) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issuetype-field")));
         WebElement issueInputBox = driver.findElement(By.id("issuetype-field"));
