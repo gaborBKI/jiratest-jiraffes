@@ -41,7 +41,7 @@ public class CreateIssueTests {
         util.selectIssue(issue);
 
         String issues = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
-        String activeIssue = createIssueUtil.parsejson(issues);
+        String activeIssue = createIssueUtil.parseJson(issues);
         Assert.assertEquals(issue, activeIssue);
 
     }

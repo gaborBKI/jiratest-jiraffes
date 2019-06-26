@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public class CreateIssueUtil {
 
-    public String parsejson(String jsonText) throws JSONException{
+    public String parseJson(String jsonText) throws JSONException{
 
         final JSONObject obj = new JSONObject(jsonText.substring(1, jsonText.length()-1));
         final JSONArray itemArray = obj.getJSONArray("items");
