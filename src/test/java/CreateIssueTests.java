@@ -39,29 +39,16 @@ public class CreateIssueTests {
     }
 
     @ParameterizedTest
-    @MethodSource("issues")
+    @MethodSource("issues") // try ValueSource?
     public void testCoalaCreateIssues(String issue) {
         String projectName = "coala";
         util.getToCreateIssue();
         util.selectProject(projectName);
         util.selectIssue(issue);
 
-        String issues = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
-        String activeIssue = createIssueUtil.parsejson(issues);
+        String issues = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions"); // Incorrect data, seems like it is 1 step behind?
+        String activeIssue = createIssueUtil.parsejson(issues); // Seems like this line of code is not ran when parameters change??
         Assert.assertEquals(issue, activeIssue);
-
-        /*
-        //isWarning hidden only was found in case of non existent issue
-        String isWarningHidden = driver.findElement(By.id("assistive-text")).getText();
-        Assert.assertNull(isWarningHidden);
-
-         */
-        /*
-        //Get data with Json(Was not working with Issue)
-        Assert.assertEquals(issue, issueName);
-        String projectResultJSON = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
-        String parsedName = createIssueUtil.parsejson(projectResultJSON);
-        Assert.assertTrue(createIssueUtil.checkForMatch(issue, parsedName));*/
 
     }
 
