@@ -42,8 +42,8 @@ public class CreateIssueTests {
         util.getToCreateIssue();
         util.selectProject(projectName);
         util.selectIssue(issue);
-        Select issueBox = new Select(driver.findElement(By.className("icon aui-ss-icon noloading drop-menu")));
-        String issueName = issueBox.getFirstSelectedOption().getText();
+        WebElement selectBox = driver.findElement(By.id("issuetype-field"));
+        String issueName = selectBox.getText();
         /*String projectResultJSON = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
         String parsedName = createIssueUtil.parsejson(projectResultJSON);
         Assert.assertTrue(createIssueUtil.checkForMatch(issue, parsedName));*/
