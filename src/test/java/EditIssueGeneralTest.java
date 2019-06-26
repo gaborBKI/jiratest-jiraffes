@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,6 +38,8 @@ public class EditIssueGeneralTest {
     @ParameterizedTest
     @MethodSource("urlsStream")
     public void editPageOpensTest(String urls) {
+        WebDriverWait waitAfterLogin = new WebDriverWait(driver, 20);
+        waitAfterLogin.until(ExpectedConditions.visibilityOfElementLocated(By.id("gadget-10003-title")));
         driver.navigate().to(urls);
         driver.manage().window().maximize();
         System.out.println("Page opened");
