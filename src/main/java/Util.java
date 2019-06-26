@@ -56,7 +56,7 @@ public class Util {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement issueInputBox = wait.until(ExpectedConditions.elementToBeClickable(By.id("issuetype-field")));
         issueInputBox.click();
-        issueInputBox.sendKeys(issue+ Keys.ENTER);
+        issueInputBox.sendKeys(issue+ Keys.TAB);
         wait.until(ExpectedConditions.elementToBeClickable(By.id("issuetype-field")));
     }
 
