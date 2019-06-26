@@ -31,17 +31,17 @@ public class EditIssueSpecificTest {
         util = new Util(driver);
         util.navigateToPage();
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
-    }
-
-    /*@Test
-    public void deleteRequiredFieldsTest() {
-        WebDriverWait waitForMainPage = new WebDriverWait(driver, 10);
-        WebElement elementMainPage = waitForMainPage.until(
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement elementMainPage = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
         util.navigateToPage("https://jira.codecool.codecanvas.hu/browse/SAND-40");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement element = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+    }
+
+    @Test
+    public void deleteRequiredFieldsTest() {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement editButton = driver.findElement(By.id("edit-issue"));
         editButton.click();
         WebElement editIssueDialogWait = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue-dialog")));
@@ -62,11 +62,6 @@ public class EditIssueSpecificTest {
     @Test
     public void deleteIssueSummary() {
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement elementMainPage = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
-        util.navigateToPage("https://jira.codecool.codecanvas.hu/browse/SAND-40");
-        WebElement element = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
         WebElement issueField = driver.findElement(By.id("summary-val"));
         issueField.click();
         WebElement waitForEditable = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#summary")));
@@ -75,15 +70,12 @@ public class EditIssueSpecificTest {
         WebElement waitForError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("error")));
         WebElement error = driver.findElement(By.className("error"));
         Assert.assertNotNull(error);
-    }*/
+    }
 
     @Test
     public void editDescription() {
-        WebDriverWait waitForMainPage = new WebDriverWait(driver, 10);
-        waitForMainPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
-        util.navigateToPage("https://jira.codecool.codecanvas.hu/browse/SAND-40");
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        WebElement editButton = driver.findElement(By.id("edit-issue"));
         editButton.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"edit-issue-dialog\"]/div[2]/div[1]/div/form")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("aui-uid-1")));
@@ -95,11 +87,32 @@ public class EditIssueSpecificTest {
         text.sendKeys("Test");
         WebElement editIssueSubmit = driver.findElement(By.id("edit-issue-submit"));
         editIssueSubmit.click();
+        String descriptionText = driver.findElement(By.id("description-val")).getText();
+        Assert.assertEquals("Test", descriptionText);
     }
 
-    /*@AfterEach
+
+    @Test
+    public void editIssueType() {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        editButton.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"edit-issue-dialog\"]/div[2]/div[1]/div/form")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issuetype-field")));
+        WebElement dropdown = driver.findElement(By.xpath("//*[@id=\"issuetype-field\"]"));
+        dropdown.click();
+        dropdown.sendKeys("Task");
+        WebElement editIssueSubmit = driver.findElement(By.id("edit-issue-submit"));
+        editIssueSubmit.click();
+        String issueTypeText = driver.findElement(By.id("type-val")).getText();
+        Assert.assertEquals("Task", issueTypeText);
+
+    }
+
+
+    @AfterEach
     public void tearDown(){
         util.closeWindow();
-    }*/
+    }
 
 }
