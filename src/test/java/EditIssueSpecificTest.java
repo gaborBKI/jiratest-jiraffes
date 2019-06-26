@@ -82,7 +82,7 @@ public class EditIssueSpecificTest {
         WebDriverWait waitForMainPage = new WebDriverWait(driver, 10);
         waitForMainPage.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
         util.navigateToPage("https://jira.codecool.codecanvas.hu/browse/SAND-40");
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, 30);
         WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
         editButton.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"edit-issue-dialog\"]/div[2]/div[1]/div/form")));
