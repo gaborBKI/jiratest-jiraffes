@@ -6,14 +6,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
 import java.util.stream.Stream;
 
 public class CreateIssueTests {
@@ -39,21 +33,21 @@ public class CreateIssueTests {
     }
 
     @ParameterizedTest
-    @MethodSource("issues") // try ValueSource?
+    @MethodSource("issues")
     public void testCoalaCreateIssues(String issue) {
         String projectName = "coala";
         util.getToCreateIssue();
         util.selectProject(projectName);
         util.selectIssue(issue);
 
-        String issues = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions"); // Incorrect data, seems like it is 1 step behind?
-        String activeIssue = createIssueUtil.parsejson(issues); // Seems like this line of code is not ran when parameters change??
+        String issues = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
+        String activeIssue = createIssueUtil.parsejson(issues);
         Assert.assertEquals(issue, activeIssue);
 
     }
 
     @AfterEach
-    public void close(){
+    public void close() {
         driver.close();
     }
 
