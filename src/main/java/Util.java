@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -36,7 +37,9 @@ public class Util {
         driver.close();
     }
 
-    public void getToCreateIssue() {
+    public void getToCreateIssue(){
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("create_link")));
         driver.findElement(By.id("create_link")).click();
     }
 
@@ -45,7 +48,8 @@ public class Util {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("project-field")));
         WebElement projectInputBox = driver.findElement(By.id("project-field"));
         projectInputBox.click();
-        projectInputBox.sendKeys(project);
+        projectInputBox.sendKeys(project + Keys.RETURN);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issuetype-field")));
     }
 
     public void selectIssue(String issue) {
