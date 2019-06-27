@@ -1,8 +1,5 @@
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,10 +14,11 @@ public class EditIssueSpecificTest {
 
     private static WebDriver driver;
     private static Util util;
+    private static WebDriverWait wait;
 
-    @BeforeEach
-    public void setUp(){
-        switch (System.getenv("driverType")){
+    @BeforeAll
+    public static void setUp() {
+        switch (System.getenv("driverType")) {
             case "Chrome":
                 driver = new ChromeDriver();
                 break;
@@ -31,27 +29,25 @@ public class EditIssueSpecificTest {
         util = new Util(driver);
         util.navigateToPage();
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement elementMainPage = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
+        wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
+    }
+
+    @BeforeEach
+    public void init() {
         util.navigateToPage("https://jira.codecool.codecanvas.hu/browse/SAND-40");
-        WebElement element = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        driver.findElement(By.id("edit-issue")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue-dialog")));
     }
 
     @Test
     public void deleteRequiredFieldsTest() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement editButton = driver.findElement(By.id("edit-issue"));
-        editButton.click();
-        WebElement editIssueDialogWait = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue-dialog")));
         WebElement summary = driver.findElement(By.id("summary"));
         summary.click();
         summary.clear();
-        WebElement editIssueSubmit = driver.findElement(By.id("edit-issue-submit"));
-        editIssueSubmit.click();
-        WebElement waitForError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("error")));
-        WebElement error = driver.findElement(By.className("error"));
+        driver.findElement(By.id("edit-issue-submit")).click();
+        WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("error")));
         WebElement issueType = driver.findElement(By.id("issuetype-field"));
         issueType.click();
         issueType.clear();
@@ -61,22 +57,16 @@ public class EditIssueSpecificTest {
 
     @Test
     public void deleteIssueSummary() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement issueField = driver.findElement(By.id("summary-val"));
-        issueField.click();
-        WebElement waitForEditable = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#summary")));
-        WebElement issueFieldEditable = driver.findElement(By.cssSelector("#summary"));
+        WebElement issueFieldEditable = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#summary")));
+        issueFieldEditable.click();
         issueFieldEditable.clear();
-        WebElement waitForError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("error")));
-        WebElement error = driver.findElement(By.className("error"));
+        driver.findElement(By.id("edit-issue-submit")).click();
+        WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("error")));
         Assert.assertNotNull(error);
     }
 
     @Test
     public void editDescription() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement editButton = driver.findElement(By.id("edit-issue"));
-        editButton.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"edit-issue-dialog\"]/div[2]/div[1]/div/form")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("aui-uid-1")));
         driver.findElement(By.id("aui-uid-1")).click();
@@ -91,12 +81,8 @@ public class EditIssueSpecificTest {
         Assert.assertEquals("Test", descriptionText);
     }
 
-
     @Test
     public void editIssueType() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
-        editButton.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"edit-issue-dialog\"]/div[2]/div[1]/div/form")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issuetype-field")));
         WebElement dropdown = driver.findElement(By.xpath("//*[@id=\"issuetype-field\"]"));
@@ -106,12 +92,10 @@ public class EditIssueSpecificTest {
         editIssueSubmit.click();
         String issueTypeText = driver.findElement(By.id("type-val")).getText();
         Assert.assertEquals("Task", issueTypeText);
-
     }
 
-
-    @AfterEach
-    public void tearDown(){
+    @AfterAll
+    public static void tearDown() {
         util.closeWindow();
     }
 
