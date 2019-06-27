@@ -1,6 +1,10 @@
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CreateIssueUtil {
 
@@ -26,5 +30,12 @@ public class CreateIssueUtil {
             }
         }
         return false;
+    }
+
+    public int navigateAndGetNumOfIssues(WebDriver driver){
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.get("https://jira.codecool.codecanvas.hu/browse/JETI-89?filter=-2");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("issue-list")));
+        return driver.findElement(By.className("issue-list")).findElements(By.tagName("li")).size();
     }
 }
