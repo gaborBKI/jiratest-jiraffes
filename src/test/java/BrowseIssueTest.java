@@ -18,6 +18,7 @@ public class BrowseIssueTest {
 
     private static WebDriver driver;
     private static Util util;
+    private static WebDriverWait wait;
 
     static Stream<Arguments> coalaUrlDataProvider() {
         return Stream.of(Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-1"),
@@ -37,8 +38,8 @@ public class BrowseIssueTest {
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/TOUCAN-3"));
     }
 
-    @BeforeEach
-    public void setUp(){
+    @BeforeAll
+    public static void setUp(){
         switch (System.getenv("driverType")){
             case "Chrome":
                 driver = new ChromeDriver();
@@ -49,13 +50,14 @@ public class BrowseIssueTest {
         }
         util = new Util(driver);
         util.navigateToPage();
+        wait = new WebDriverWait(driver, 10);
+        util.loginToSite(System.getenv("jiraUser"), System.getenv("jiraPass"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("find_link")));
     }
 
     @Order(1)
     @Test
     public void searchForIssuesTest() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        util.loginToSite(System.getenv("jiraUser"), System.getenv("jiraPass"));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("find_link"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issues_new_search_link_lnk"))).click();
         WebElement input = driver.findElement(By.id("searcher-query"));
@@ -71,9 +73,6 @@ public class BrowseIssueTest {
     @ParameterizedTest
     @MethodSource("coalaUrlDataProvider")
     public void coalaProjectContainsThreeIssue(String url) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        util.loginToSite(System.getenv("jiraUser"), System.getenv("jiraPass"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("find_link")));
         driver.get(url);
         WebElement summary = driver.findElement(By.id("summary-val"));
         Assert.assertNotNull(summary);
@@ -83,9 +82,6 @@ public class BrowseIssueTest {
     @ParameterizedTest
     @MethodSource("jetiUrlDataProvider")
     public void jetiProjectContainsThreeIssue(String url) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        util.loginToSite(System.getenv("jiraUser"), System.getenv("jiraPass"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("find_link")));
         driver.get(url);
         WebElement summary = driver.findElement(By.id("summary-val"));
         Assert.assertNotNull(summary);
@@ -95,16 +91,13 @@ public class BrowseIssueTest {
     @ParameterizedTest
     @MethodSource("toucanUrlDataProvider")
     public void toucanProjectContainsThreeIssue(String url) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        util.loginToSite(System.getenv("jiraUser"), System.getenv("jiraPass"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("find_link")));
         driver.get(url);
         WebElement summary = driver.findElement(By.id("summary-val"));
         Assert.assertNotNull(summary);
     }
 
-    @AfterEach
-    public void tearDown(){
+    @AfterAll
+    public static void tearDown(){
         util.closeWindow();
     }
 }

@@ -1,6 +1,6 @@
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,8 +14,8 @@ public class BrowseProjectsTest {
     private static Util util;
     private static BrowseProjectsUtil browseProjectsUtil;
 
-    @BeforeEach
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         switch (System.getenv("driverType")) {
             case "Chrome":
                 driver = new ChromeDriver();
@@ -40,13 +40,12 @@ public class BrowseProjectsTest {
     @Test
     public void projectPageValid(){
         String expectedURL = "https://jira.codecool.codecanvas.hu/projects/MTP/issues";
-        browseProjectsUtil.navigateToAllProjects();
         browseProjectsUtil.checkForProjectInList("Main Testing Project");
         Assert.assertEquals(expectedURL, driver.getCurrentUrl());
     }
 
-    @AfterEach
-    public void tearDown(){
+    @AfterAll
+    public static void tearDown(){
         driver.close();
     }
 

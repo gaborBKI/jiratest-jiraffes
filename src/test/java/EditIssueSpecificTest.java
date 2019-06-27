@@ -8,8 +8,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.concurrent.TimeUnit;
-
 public class EditIssueSpecificTest {
 
     private static WebDriver driver;
@@ -29,7 +27,7 @@ public class EditIssueSpecificTest {
         util = new Util(driver);
         util.navigateToPage();
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
-        wait = new WebDriverWait(driver, 10);
+        wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-details-user-fullname")));
     }
 

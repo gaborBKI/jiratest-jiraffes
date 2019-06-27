@@ -16,7 +16,7 @@ public class BrowseProjectsUtil {
 
     public void navigateToAllProjects(){
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"header\"]/nav")));
-        WebElement projectsDropdown = driver.findElement(By.id("browse_link"));
+        WebElement projectsDropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("browse_link")));
         projectsDropdown.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("project_view_all_link_lnk")));
         WebElement viewAllButton = driver.findElement(By.id("project_view_all_link_lnk"));
