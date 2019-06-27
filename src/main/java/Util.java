@@ -1,7 +1,4 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -54,8 +51,6 @@ public class Util {
     }
 
     public void selectProject(String project) {
-        WebDriverWait wait = new WebDriverWait(driver, 10); //todo: Refactor this out of the function
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("project-field")));
         WebElement projectInputBox = driver.findElement(By.id("project-field"));
         projectInputBox.click();
         projectInputBox.sendKeys(project + Keys.RETURN);
@@ -66,7 +61,7 @@ public class Util {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement issueInputBox = wait.until(ExpectedConditions.elementToBeClickable(By.id("issuetype-field")));
         issueInputBox.click();
-        issueInputBox.sendKeys(issue+ Keys.TAB);
+        issueInputBox.sendKeys(issue + Keys.TAB);
         wait.until(ExpectedConditions.elementToBeClickable(By.id("issuetype-field")));
     }
 
