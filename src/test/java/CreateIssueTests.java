@@ -90,6 +90,7 @@ public class CreateIssueTests {
         int numberOfIssues = createIssueUtil.navigateAndGetNumOfIssues(driver);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("summary-val")));
         util.getToCreateIssue();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("summary")));
         WebElement summaryInputField =driver.findElement(By.id("summary"));
         summaryInputField.click();
         summaryInputField.sendKeys("SummaryForTest");
