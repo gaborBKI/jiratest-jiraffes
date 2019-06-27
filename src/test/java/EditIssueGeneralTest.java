@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -53,12 +54,31 @@ public class EditIssueGeneralTest {
         return Stream.of(Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-1"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-2"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-3"),
+
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-1"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-2"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-3"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/TOUCAN-1"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/TOUCAN-2"),
-                Arguments.of("https://jira.codecool.codecanvas.hu/browse/TOUCAN-3"));
+                Arguments.of("https://jira.codecool.codecanvas.hu/browse/TOUCAN-3")
+        );
+    }
+
+    @Test
+    public void inlineEditing() {
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("gadget-10003-title")));
+        driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/COALA-1");
+        driver.manage().window().maximize();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        WebElement summaryHeader = driver.findElement(By.id("summary-val"));
+        summaryHeader.click();
+        WebElement summaryField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("summary")));
+        summaryField.sendKeys("Coala Task 2");
+        summaryField.sendKeys(Keys.RETURN);
+        summaryHeader.click();
+        Assert.assertEquals("Coala Task 2", summaryField.getAttribute("value"));
+
     }
 
     @AfterEach
