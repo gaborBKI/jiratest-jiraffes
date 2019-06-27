@@ -1,7 +1,5 @@
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,35 +18,7 @@ public class EditIssueGeneralTest {
 
     private static WebDriver driver;
     private static Util util;
-
-    @BeforeEach
-    public void setUp(){
-        switch (System.getenv("driverType")){
-            case "Chrome":
-                driver = new ChromeDriver();
-                break;
-            case "Firefox":
-                driver = new FirefoxDriver();
-                break;
-        }
-        util = new Util(driver);
-        util.navigateToPage();
-        util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
-    }
-
-    @ParameterizedTest
-    @MethodSource("urlsStream")
-    public void editPageOpensTest(String urls) {
-        WebDriverWait waitAfterLogin = new WebDriverWait(driver, 20);
-        waitAfterLogin.until(ExpectedConditions.visibilityOfElementLocated(By.id("gadget-10003-title")));
-        driver.navigate().to(urls);
-        driver.manage().window().maximize();
-        System.out.println("Page opened");
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
-        editButton.click();
-        Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
-    }
+    private static WebDriverWait wait;
 
     static Stream<Arguments> urlsStream() {
         return Stream.of(Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-1"),
@@ -63,13 +33,36 @@ public class EditIssueGeneralTest {
         );
     }
 
+    @BeforeAll
+    public static void setUp(){
+        switch (System.getenv("driverType")){
+            case "Chrome":
+                driver = new ChromeDriver();
+                break;
+            case "Firefox":
+                driver = new FirefoxDriver();
+                break;
+        }
+        util = new Util(driver);
+        util.navigateToPage();
+        util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
+        wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("gadget-10003-title")));
+    }
+
+    @ParameterizedTest
+    @MethodSource("urlsStream")
+    public void editPageOpensTest(String urls) {
+        driver.navigate().to(urls);
+        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        editButton.click();
+        Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
+    }
+
     @Test
     public void inlineEditing() {
-        WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("gadget-10003-title")));
         driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/COALA-1");
-        driver.manage().window().maximize();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("project-avatar")));
         WebElement summaryHeader = driver.findElement(By.id("summary-val"));
         summaryHeader.click();
         WebElement summaryField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("summary")));
@@ -84,8 +77,8 @@ public class EditIssueGeneralTest {
          */
     }
 
-    @AfterEach
-    public void tearDown() {
+    @AfterAll
+    public static void tearDown() {
         util.closeWindow();
     }
 
