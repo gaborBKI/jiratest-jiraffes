@@ -23,15 +23,6 @@ public class CreateIssueUtil {
         return activeField;
     }
 
-    public boolean checkForMatch(String wordToCheck,String fromText){
-        for (String word:fromText.split(" ")) {
-            if(word.toLowerCase().equals(wordToCheck.toLowerCase())){
-                return true;
-            }
-        }
-        return false;
-    }
-
     public int navigateAndGetNumOfIssues(WebDriver driver){
         WebDriverWait wait = new WebDriverWait(driver, 10);
         driver.get("https://jira.codecool.codecanvas.hu/browse/JETI-89?filter=-2");
