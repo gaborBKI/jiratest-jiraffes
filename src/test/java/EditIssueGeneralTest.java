@@ -54,7 +54,6 @@ public class EditIssueGeneralTest {
         return Stream.of(Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-1"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-2"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/COALA-3"),
-
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-1"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-2"),
                 Arguments.of("https://jira.codecool.codecanvas.hu/browse/JETI-3"),
@@ -78,7 +77,11 @@ public class EditIssueGeneralTest {
         summaryField.sendKeys(Keys.RETURN);
         summaryHeader.click();
         Assert.assertEquals("Coala Task 2", summaryField.getAttribute("value"));
+        /*summaryHeader.click();
+        summaryField.sendKeys("Coala Task");
+        summaryField.sendKeys(Keys.RETURN);
 
+         */
     }
 
     @AfterEach
