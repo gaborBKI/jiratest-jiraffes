@@ -1,12 +1,10 @@
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -46,7 +44,7 @@ public class EditIssueGeneralTest {
         util = new Util(driver);
         util.navigateToPage();
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));
-        wait = new WebDriverWait(driver, 20);
+        wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("gadget-10003-title")));
     }
 
@@ -54,27 +52,24 @@ public class EditIssueGeneralTest {
     @MethodSource("urlsStream")
     public void editPageOpensTest(String urls) {
         driver.navigate().to(urls);
-        WebElement editButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("edit-issue")));
+        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-issue")));
         editButton.click();
         Assert.assertNotNull(driver.findElement(By.id("edit-issue-dialog")));
     }
 
     @Test
     public void inlineEditing() {
+        String newSummary = "Coala Task 3";
         driver.navigate().to("https://jira.codecool.codecanvas.hu/browse/COALA-1");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("project-avatar")));
-        WebElement summaryHeader = driver.findElement(By.id("summary-val"));
+        wait.until(
+                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+        WebElement summaryHeader = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@title=\"Click to edit\"]")));
         summaryHeader.click();
         WebElement summaryField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("summary")));
-        summaryField.sendKeys("Coala Task 2");
+        summaryField.sendKeys(newSummary);
         summaryField.sendKeys(Keys.RETURN);
-        summaryHeader.click();
-        Assert.assertEquals("Coala Task 2", summaryField.getAttribute("value"));
-        /*summaryHeader.click();
-        summaryField.sendKeys("Coala Task");
-        summaryField.sendKeys(Keys.RETURN);
-
-         */
+        String finalSummary = summaryField.getAttribute("value");
+        Assert.assertEquals(newSummary, finalSummary);
     }
 
     @AfterAll

@@ -53,7 +53,7 @@ public class Util {
     public void selectProject(String project) {
         WebElement projectInputBox = driver.findElement(By.id("project-field"));
         projectInputBox.click();
-        projectInputBox.sendKeys(project + Keys.RETURN);
+        projectInputBox.sendKeys(project + Keys.TAB);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("issuetype-field")));
     }
 
