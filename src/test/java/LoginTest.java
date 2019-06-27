@@ -31,14 +31,7 @@ public class LoginTest {
 
     @BeforeEach
     public void setUp(){
-        switch (System.getenv("driverType")){
-            case "Chrome":
-                driver = new ChromeDriver();
-                break;
-            case "Firefox":
-                driver = new FirefoxDriver();
-                break;
-        }
+        driver = DriverFactory.getDriver(System.getenv("driverType"));
         wait = new WebDriverWait(driver, 10);
         util = new Util(driver);
         util.navigateToPage();

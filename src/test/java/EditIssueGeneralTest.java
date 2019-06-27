@@ -33,14 +33,7 @@ public class EditIssueGeneralTest {
 
     @BeforeAll
     public static void setUp(){
-        switch (System.getenv("driverType")){
-            case "Chrome":
-                driver = new ChromeDriver();
-                break;
-            case "Firefox":
-                driver = new FirefoxDriver();
-                break;
-        }
+        driver = DriverFactory.getDriver(System.getenv("driverType"));
         util = new Util(driver);
         util.navigateToPage();
         util.loginToSite(System.getenv("jiraUser"), System.getenv(("jiraPass")));

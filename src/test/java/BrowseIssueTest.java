@@ -6,8 +6,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -40,17 +38,10 @@ public class BrowseIssueTest {
 
     @BeforeAll
     public static void setUp(){
-        switch (System.getenv("driverType")){
-            case "Chrome":
-                driver = new ChromeDriver();
-                break;
-            case "Firefox":
-                driver = new FirefoxDriver();
-                break;
-        }
+        driver = DriverFactory.getDriver(System.getenv("driverType"));
+        wait = new WebDriverWait(driver, 10);
         util = new Util(driver);
         util.navigateToPage();
-        wait = new WebDriverWait(driver, 10);
         util.loginToSite(System.getenv("jiraUser"), System.getenv("jiraPass"));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("find_link")));
     }

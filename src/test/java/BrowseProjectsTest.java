@@ -16,14 +16,7 @@ public class BrowseProjectsTest {
 
     @BeforeAll
     public static void setUp() {
-        switch (System.getenv("driverType")) {
-            case "Chrome":
-                driver = new ChromeDriver();
-                break;
-            case "Firefox":
-                driver = new FirefoxDriver();
-                break;
-        }
+        driver = DriverFactory.getDriver(System.getenv("driverType"));
         browseProjectsUtil = new BrowseProjectsUtil(driver);
         util = new Util(driver);
         util.navigateToPage();
