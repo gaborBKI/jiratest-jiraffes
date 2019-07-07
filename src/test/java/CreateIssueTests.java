@@ -19,7 +19,6 @@ public class CreateIssueTests {
     private static Util util;
     private static WebDriverWait wait;
 
-
     @BeforeAll
     public static void setUp() {
         switch (System.getenv("driverType")) {
@@ -41,7 +40,6 @@ public class CreateIssueTests {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", projectInputBox);
     }
 
-
     @Order(1)
     @ParameterizedTest
     @MethodSource("issues")
@@ -53,6 +51,7 @@ public class CreateIssueTests {
         String issues = driver.findElement(By.id("issuetype-options")).getAttribute("data-suggestions");
         String activeIssue = createIssueUtil.parseJson(issues);
         Assert.assertEquals(issue, activeIssue);
+      
 
     }
 
@@ -87,7 +86,8 @@ public class CreateIssueTests {
     @Order(4)
     @Test
     public void testCreateIssueGeneral(){
-        int numberOfIssues = createIssueUtil.navigateAndGetNumOfIssues(driver);
+        createIssueUtil.navigateToIssues(driver);
+        int numberOfIssues = createIssueUtil.getNumOfIssues(driver);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("summary-val")));
         util.getToCreateIssue();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("summary")));
@@ -95,10 +95,10 @@ public class CreateIssueTests {
         summaryInputField.click();
         summaryInputField.sendKeys("SummaryForTest");
         driver.findElement(By.id("create-issue-submit")).click();
-        int newNumberOfIssues =createIssueUtil.navigateAndGetNumOfIssues(driver);
-        Assert.assertTrue(numberOfIssues == newNumberOfIssues-1);
+        createIssueUtil.navigateToIssues(driver);
+        int newNumberOfIssues =createIssueUtil.getNumOfIssues(driver);
+        Assert.assertEquals(numberOfIssues, newNumberOfIssues - 1);
     }
-
 
 
     @Order(5)

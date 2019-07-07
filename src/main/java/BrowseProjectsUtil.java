@@ -14,6 +14,7 @@ public class BrowseProjectsUtil {
         wait = new WebDriverWait(driver, 10);
     }
 
+
     public void navigateToAllProjects(){
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"header\"]/nav")));
         WebElement projectsDropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("browse_link")));
@@ -23,6 +24,7 @@ public class BrowseProjectsUtil {
         viewAllButton.click();
 
     }
+
 
     public void checkForProjectInList(String projectTitle){
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@original-title=" + "'" + projectTitle + "'" + "]")));

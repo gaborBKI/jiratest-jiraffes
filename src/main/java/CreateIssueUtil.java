@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CreateIssueUtil {
 
+
     public String parseJson(String jsonText) throws JSONException{
 
         final JSONObject obj = new JSONObject(jsonText.substring(1, jsonText.length()-1));
@@ -23,10 +24,14 @@ public class CreateIssueUtil {
         return activeField;
     }
 
-    public int navigateAndGetNumOfIssues(WebDriver driver){
+    public int getNumOfIssues(WebDriver driver){
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        driver.get("https://jira.codecool.codecanvas.hu/browse/JETI-89?filter=-2");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("issue-list")));
         return driver.findElement(By.className("issue-list")).findElements(By.tagName("li")).size();
+    }
+
+
+    public void navigateToIssues(WebDriver driver) {
+        driver.get("https://jira.codecool.codecanvas.hu/browse/JETI-89?filter=-2");
     }
 }

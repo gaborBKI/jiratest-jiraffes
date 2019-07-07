@@ -71,12 +71,12 @@ public class LoginTest {
 
     /*@Order(3)
     @ParameterizedTest
-    @MethodSource("issues")
+    @MethodSource("userDataProvider")
     public void captchaAppearTest(String name, String password){
         IntStream.range(0, 3).forEachOrdered(i -> util.loginToSite(name, password));
         WebElement captcha = driver.findElement(By.id("captchaimg"));
         Assert.assertNotNull(captcha);
-    }*/
+    } */
 
     @AfterEach
     public void tearDown(){
